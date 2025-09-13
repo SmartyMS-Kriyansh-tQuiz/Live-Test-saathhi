@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Leaderboard</title>
+  <style>
+    body { font-family: Arial, sans-serif; background:#f4f6f9; margin:0; padding:20px; }
+    h2 { text-align:center; color:#222; }
+    table { width:100%; border-collapse:collapse; margin-top:20px; }
+    th, td { border:1px solid #ccc; padding:8px; text-align:center; }
+    th { background:#007bff; color:#fff; }
+    tr:nth-child(even) { background:#e9ecef; }
+    .btn-back { display:block; width:150px; margin:20px auto; padding:10px 20px; background:#28a745; color:#fff; text-align:center; text-decoration:none; border-radius:8px; }
+    .no-data { text-align:center; margin-top:50px; font-size:18px; color:#555; }
+  </style>
+</head>
+<body>
+  <h2>Leaderboard</h2>
+  <div id="leaderboardDiv"></div>
+  <a href="index.html" class="btn-back">Back to Test</a>
+
+  <script>
+    let leaderboard = JSON.parse(localStorage.getItem("leaderboard") || "[]");
+
+    const div = document.getElementById("leaderboardDiv");
+
+    if(leaderboard.length === 0){
+      div.innerHTML = `<p class="no-data">No results found.</p>`;
+    } else {
+      // Sort by marks descending
+      leaderboard.sort((a, b) => b.marks - a.marks);
+
+      let html = `<table>
+        <tr>
+          <th>Rank</th>
+          <th>Name</th>
+          <th>Marks</th>
+          <th>Percentage</th>
+          <th>Date</th>
+        </tr>`;
+
+      leaderboard.forEach((item, index) => {
+        html += `
+          <tr>
+            <td>${index + 1}</td>
+            <td>${item.name}</td>
+            <td>${item.marks}</td>
+            <td>${item.percentage}%</td>
+            <td>${item.date}</td>
+          </tr>`;
+      });
+
+      html += `</table>`;
+      div.innerHTML = html;
+    }
+  </script>
+</body>
+</html>
